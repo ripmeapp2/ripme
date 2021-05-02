@@ -1,3 +1,6 @@
+import org.jetbrains.compose.compose
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+
 //    permits to start the build setting the javac release parameter, no parameter means build for java8:
 // gradle clean build -PjavacRelease=8
 // gradle clean build -PjavacRelease=17
@@ -8,14 +11,21 @@ plugins {
   id("jacoco")
   id("java")
   id("maven-publish")
+  // __KOTLIN_COMPOSE_VERSION__
+  kotlin("jvm") version "1.4.32"
+  // __LATEST_COMPOSE_RELEASE_VERSION__
+  id("org.jetbrains.compose") version (System.getenv("COMPOSE_TEMPLATE_COMPOSE_VERSION") ?: "0.4.0-build180")
 }
 
 repositories {
   mavenLocal()
   mavenCentral()
+  // TODO both repos temporary, jcenter is decommitted, compose will be released later on
+  maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 dependencies {
+  implementation(compose.desktop.currentOs)
   implementation("com.lmax:disruptor:3.4.4")
   implementation("org.java-websocket:Java-WebSocket:1.5.3")
   implementation("org.jsoup:jsoup:1.16.1")
@@ -39,6 +49,20 @@ description = "ripme"
 
 jacoco {
   toolVersion = "0.8.10"
+}
+
+compose.desktop {
+  application {
+    mainClass = "MainKt"
+
+    nativeDistributions {
+      targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+      packageName = "ripme"
+      nativeDistributions.linux.debPackageVersion = "2.0.1"
+      nativeDistributions.macOS.dmgPackageVersion = "2.0.1"
+      nativeDistributions.windows.msiPackageVersion = "2.0.1"
+    }
+  }
 }
 
 jgitver {
