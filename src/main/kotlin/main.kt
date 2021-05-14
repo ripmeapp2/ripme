@@ -8,6 +8,7 @@ import androidx.compose.ui.res.svgResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.rarchives.ripme.ripper.AbstractRipper
 
 
 
@@ -90,7 +91,7 @@ private fun TextInput() {
         value = ripUrl,
         trailingIcon = {
             IconButton(onClick = {
-                var url: java.net.URL? = java.net.URL(ripUrl.toString())
+                Rip(ripUrl)
             }) {
                 Icon(
                     svgResource("download-from-cloud-svgrepo-com.svg"),
@@ -107,4 +108,14 @@ private fun TextInput() {
             ripUrl = it
         }
     )
+}
+
+private fun Rip(url: TextFieldValue) {
+    try {
+        val ripper: AbstractRipper = AbstractRipper.getRipper(java.net.URL(url.text.toString()))
+        ripper.setup()
+        ripper.rip()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 }
