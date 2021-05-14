@@ -15,14 +15,21 @@ import com.rarchives.ripme.ripper.AbstractRipper
 fun main() = Window(title = "RipMe") {
     MaterialTheme {
 
-        Column {
-            TextInput()
-            NavigationBar()
-
-        }
+        LogScreen()
     }
-
 }
+
+
+@Composable
+private fun LogScreen() {
+    Column {
+        TextInput()
+        NavigationBar()
+        LogView()
+    }
+}
+
+
 
 private enum class NavType {
     LOG, HISTORY, QUEUE, SETTINGS
@@ -80,6 +87,19 @@ private fun NavigationBar() {
         )
     }
 }
+
+@Composable
+private fun LogView() {
+    OutlinedTextField(
+        value = "Log ...",
+        modifier = Modifier.padding(8.dp).fillMaxSize(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        label = { Text(text = "Log:") },
+        onValueChange = {
+        }
+    )
+}
+
 
 
 
