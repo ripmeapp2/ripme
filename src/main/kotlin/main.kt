@@ -14,30 +14,42 @@ import com.rarchives.ripme.ripper.AbstractRipper
 
 fun main() = Window(title = "RipMe") {
     MaterialTheme {
-        var screenState by remember { mutableStateOf<Screen>(Screen.LogScreen) }
+        MainView()
+    }
+}
+
+@Composable
+fun MainView() {
+    var screenState by remember { mutableStateOf<Screen>(Screen.LogScreen) }
+
+    Column {
+        TextInput()
 
         when (val screen = screenState) {
             is Screen.LogScreen ->
                 LogScreen()
+            is Screen.HistoryScreen ->
+                HistoryScreen()
         }
     }
 }
 
-
 @Composable
 private fun LogScreen() {
-    Column {
-        TextInput()
-        NavigationBar()
-        LogView()
-    }
+    NavigationBar()
+    LogView()
+}
+
+@Composable
+private fun HistoryScreen() {
+    NavigationBar()
+    HistoryView()
 }
 
 sealed class Screen {
     object LogScreen : Screen()
+    object HistoryScreen : Screen()
 }
-
-
 
 private enum class NavType {
     LOG, HISTORY, QUEUE, SETTINGS
@@ -108,7 +120,17 @@ private fun LogView() {
     )
 }
 
-
+@Composable
+private fun HistoryView() {
+    OutlinedTextField(
+        value = "History ...",
+        modifier = Modifier.padding(8.dp).fillMaxSize(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        label = { Text(text = "History:") },
+        onValueChange = {
+        }
+    )
+}
 
 
 
