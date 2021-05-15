@@ -14,8 +14,12 @@ import com.rarchives.ripme.ripper.AbstractRipper
 
 fun main() = Window(title = "RipMe") {
     MaterialTheme {
+        var screenState by remember { mutableStateOf<Screen>(Screen.LogScreen) }
 
-        LogScreen()
+        when (val screen = screenState) {
+            is Screen.LogScreen ->
+                LogScreen()
+        }
     }
 }
 
@@ -27,6 +31,10 @@ private fun LogScreen() {
         NavigationBar()
         LogView()
     }
+}
+
+sealed class Screen {
+    object LogScreen : Screen()
 }
 
 
