@@ -21,8 +21,7 @@ repositories {
 
 dependencies {
   implementation(compose.desktop.currentOs)
-  api("com.arkivanov.decompose:decompose:0.2.3")
-  api("com.arkivanov.decompose:extensions-compose-jetbrains:0.2.3")
+  implementation("com.arkivanov.decompose:decompose:0.2.4")
   implementation("com.lmax:disruptor:3.4.2")
   implementation("org.java-websocket:Java-WebSocket:1.5.1")
   implementation("org.jsoup:jsoup:1.8.1")
