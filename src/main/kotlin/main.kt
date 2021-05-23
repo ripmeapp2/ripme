@@ -1,21 +1,22 @@
-import androidx.compose.desktop.Window
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.svgResource
+import androidx.compose.ui.res.loadSvgPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.WindowState
+import androidx.compose.ui.window.singleWindowApplication
 import com.rarchives.ripme.ripper.AbstractRipper
 
-
-
-fun main() = Window(title = "RipMe") {
-    MaterialTheme {
-        MainView()
-    }
+fun main() = singleWindowApplication(
+    title = "RipMe",
+    state = WindowState(width = 1280.dp, height = 768.dp),
+) {
+    MainView()
 }
 
 @Composable
@@ -64,7 +65,7 @@ private fun NavigationBar() {
         BottomNavigationItem(
             icon = {
                 Icon(
-                    svgResource("black-comments-bubble-svgrepo-com.svg"),
+                    painterResource("black-comments-bubble-svgrepo-com.svg"),
                     contentDescription = "Log",
                     modifier = Modifier.fillMaxSize()
                 )
@@ -75,7 +76,7 @@ private fun NavigationBar() {
         BottomNavigationItem(
             icon = {
                 Icon(
-                    svgResource("history-svgrepo-com.svg"),
+                    painterResource("history-svgrepo-com.svg"),
                     contentDescription = "History",
                     modifier = Modifier.fillMaxSize()
                 )
@@ -86,7 +87,7 @@ private fun NavigationBar() {
         BottomNavigationItem(
             icon = {
                 Icon(
-                    svgResource("list-with-bullets-svgrepo-com.svg"),
+                    painterResource("list-with-bullets-svgrepo-com.svg"),
                     contentDescription = "Queue",
                     modifier = Modifier.fillMaxSize()
                 )
@@ -97,7 +98,7 @@ private fun NavigationBar() {
         BottomNavigationItem(
             icon = {
                 Icon(
-                    svgResource("gear-symbol-svgrepo-com.svg"),
+                    painterResource("gear-symbol-svgrepo-com.svg"),
                     contentDescription = "Settings",
                     modifier = Modifier.fillMaxSize()
                 )
@@ -133,7 +134,6 @@ private fun HistoryView() {
 }
 
 
-
 @Composable
 private fun TextInput() {
     var ripUrl by remember { mutableStateOf(TextFieldValue("")) }
@@ -144,7 +144,7 @@ private fun TextInput() {
                 Rip(ripUrl)
             }) {
                 Icon(
-                    svgResource("download-from-cloud-svgrepo-com.svg"),
+                    painterResource("download-from-cloud-svgrepo-com.svg"),
                     contentDescription = "Download",
                     modifier = Modifier.fillMaxSize()
                 )

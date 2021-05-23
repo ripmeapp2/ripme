@@ -12,9 +12,9 @@ plugins {
   id("java")
   id("maven-publish")
   // __KOTLIN_COMPOSE_VERSION__
-  kotlin("jvm") version "1.4.32"
+  kotlin("jvm") version "1.6.10"
   // __LATEST_COMPOSE_RELEASE_VERSION__
-  id("org.jetbrains.compose") version (System.getenv("COMPOSE_TEMPLATE_COMPOSE_VERSION") ?: "0.4.0-build180")
+  id("org.jetbrains.compose") version (System.getenv("COMPOSE_TEMPLATE_COMPOSE_VERSION") ?: "1.0.1")
 }
 
 repositories {
@@ -26,8 +26,7 @@ repositories {
 
 dependencies {
   implementation(compose.desktop.currentOs)
-  api("com.arkivanov.decompose:decompose:0.2.3")
-  api("com.arkivanov.decompose:extensions-compose-jetbrains:0.2.3")
+  implementation("com.arkivanov.decompose:decompose:0.4.0")
   implementation("com.lmax:disruptor:3.4.4")
   implementation("org.java-websocket:Java-WebSocket:1.5.3")
   implementation("org.jsoup:jsoup:1.16.1")
