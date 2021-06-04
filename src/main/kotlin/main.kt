@@ -28,22 +28,22 @@ fun MainView() {
 
         when (val screen = screenState) {
             is Screen.LogScreen ->
-                LogScreen()
+                LogScreen(onHistoryClick = { screenState = Screen.HistoryScreen })
             is Screen.HistoryScreen ->
-                HistoryScreen()
+                HistoryScreen(onHistoryClick = { screenState = Screen.LogScreen })
         }
     }
 }
 
 @Composable
-private fun LogScreen() {
-    NavigationBar()
+private fun LogScreen(onHistoryClick: () -> Unit) {
+    NavigationBar(onHistoryClick = onHistoryClick)
     LogView()
 }
 
 @Composable
-private fun HistoryScreen() {
-    NavigationBar()
+private fun HistoryScreen(onHistoryClick: () -> Unit) {
+    NavigationBar(onHistoryClick = onHistoryClick)
     HistoryView()
 }
 
@@ -57,7 +57,7 @@ private enum class NavType {
 }
 
 @Composable
-private fun NavigationBar() {
+private fun NavigationBar(onHistoryClick: () -> Unit) {
     Spacer(modifier = Modifier.height(16.dp))
     val navItemState = remember { mutableStateOf(NavType.LOG) }
 
@@ -82,7 +82,10 @@ private fun NavigationBar() {
                 )
             },
             selected = navItemState.value == NavType.HISTORY,
-            onClick = { navItemState.value = NavType.HISTORY },
+            onClick = {
+                onHistoryClick
+                navItemState.value = NavType.HISTORY
+            },
         )
         BottomNavigationItem(
             icon = {
