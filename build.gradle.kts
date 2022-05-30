@@ -14,7 +14,7 @@ plugins {
   // __KOTLIN_COMPOSE_VERSION__
   kotlin("jvm") version "1.6.10"
   // __LATEST_COMPOSE_RELEASE_VERSION__
-  id("org.jetbrains.compose") version (System.getenv("COMPOSE_TEMPLATE_COMPOSE_VERSION") ?: "1.0.1")
+  id("org.jetbrains.compose") version (System.getenv("COMPOSE_TEMPLATE_COMPOSE_VERSION") ?: "1.1.1")
 }
 
 repositories {
