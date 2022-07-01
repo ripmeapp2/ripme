@@ -149,7 +149,6 @@ private fun TextInput() {
                 Icon(
                     painterResource("download-from-cloud-svgrepo-com.svg"),
                     contentDescription = "Download",
-                    modifier = Modifier.fillMaxSize()
                 )
             }
         },
