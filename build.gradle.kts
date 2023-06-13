@@ -1,4 +1,3 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 //    permits to start the build setting the javac release parameter, no parameter means build for java8:
@@ -12,9 +11,9 @@ plugins {
   id("java")
   id("maven-publish")
   // __KOTLIN_COMPOSE_VERSION__
-  kotlin("jvm") version "1.6.10"
+  kotlin("jvm")
   // __LATEST_COMPOSE_RELEASE_VERSION__
-  id("org.jetbrains.compose") version (System.getenv("COMPOSE_TEMPLATE_COMPOSE_VERSION") ?: "1.1.1")
+  id("org.jetbrains.compose")
 }
 
 repositories {
