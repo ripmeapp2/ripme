@@ -141,6 +141,8 @@ public class ImagefapRipper extends AbstractHTMLRipper {
             if(image == null)
                 throw new RuntimeException("Unable to extract image URL from single image page! Unable to continue");
 
+            LOGGER.debug("Adding imageURL: '" + image + "'");
+
             imageURLs.add(image);
             if (isThisATest()) {
                 break;
@@ -177,7 +179,7 @@ public class ImagefapRipper extends AbstractHTMLRipper {
             sleep(IMAGE_SLEEP_TIME);
 
             Document doc = getPageWithRetries(new URL(pageURL));
-            return doc.select("img#mainPhoto").attr("src");
+            return doc.select("img#mainPhoto").attr("data-src");
         } catch (IOException e) {
             LOGGER.debug("Unable to get full size image URL from page URL " + pageURL + " because: " +  e.getMessage());
             return null;
