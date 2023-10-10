@@ -129,7 +129,7 @@ public class EromeRipper extends AbstractHTMLRipper {
             if (el.hasAttr("data-src")) {
                 //to add images that are not loaded( as all images are lasyloaded as we scroll).
                 results.add(el.attr("data-src"));
-            }else if (el.hasAttr("src")) {
+            } else if (el.hasAttr("src")) {
                 if (el.attr("src").startsWith("https:")) {
                     results.add(el.attr("src"));
                 } else {
