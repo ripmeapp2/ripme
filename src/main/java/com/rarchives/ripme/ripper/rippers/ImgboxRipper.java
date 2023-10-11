@@ -46,7 +46,7 @@ public class ImgboxRipper extends AbstractHTMLRipper {
         try {
             title = Http.url(url).get().select("#gallery-view > h1").text();
         }catch (Exception e){
-            LOGGER.info("[+] Failed to get album title, using id.");
+            LOGGER.info("Failed to get album title, using id.");
             title = getGID(url);
         }
         return "imgbox_" + title;
