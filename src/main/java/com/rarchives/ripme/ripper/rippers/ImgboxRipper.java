@@ -41,6 +41,18 @@ public class ImgboxRipper extends AbstractHTMLRipper {
     }
 
     @Override
+    public String getAlbumTitle(URL url) throws MalformedURLException {
+        String title;
+        try {
+            title = Http.url(url).get().select("#gallery-view > h1").text();
+        }catch (Exception e){
+            LOGGER.info("[+] Failed to get album title, using id.");
+            title = getGID(url);
+        }
+        return "imgbox_" + title;
+    }
+
+    @Override
     public List<String> getURLsFromPage(Document doc) {
         List<String> imageURLs = new ArrayList<>();
         for (Element thumb : doc.select("div.boxed-content > a > img")) {
