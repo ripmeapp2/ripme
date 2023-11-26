@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -37,7 +38,7 @@ public abstract class AbstractJSONRipper extends AbstractRipper {
     public abstract String getHost();
 
     protected abstract JSONObject getFirstPage() throws IOException;
-    protected JSONObject getNextPage(JSONObject doc) throws IOException {
+    protected JSONObject getNextPage(JSONObject doc) throws IOException, URISyntaxException {
         throw new IOException("getNextPage not implemented");
     }
     protected abstract List<String> getURLsFromJSON(JSONObject json);
@@ -56,7 +57,7 @@ public abstract class AbstractJSONRipper extends AbstractRipper {
     }
 
     @Override
-    public URL sanitizeURL(URL url) throws MalformedURLException {
+    public URL sanitizeURL(URL url) throws MalformedURLException, URISyntaxException {
         return url;
     }
 
@@ -103,7 +104,7 @@ public abstract class AbstractJSONRipper extends AbstractRipper {
             try {
                 sendUpdate(STATUS.LOADING_RESOURCE, "next page");
                 json = getNextPage(json);
-            } catch (IOException e) {
+            } catch (IOException | URISyntaxException e) {
                 LOGGER.info("Can't get next page: " + e.getMessage());
                 break;
             }
@@ -158,6 +159,10 @@ public abstract class AbstractJSONRipper extends AbstractRipper {
                   || itemsErrored.containsKey(url) )) {
             // Item is already downloaded/downloading, skip it.
             LOGGER.info("[!] Skipping " + url + " -- already attempted: " + Utils.removeCWD(saveAs));
+            return false;
+        }
+        if (shouldIgnoreURL(url)) {
+            sendUpdate(STATUS.DOWNLOAD_SKIP, "Skipping " + url.toExternalForm() + " - ignored extension");
             return false;
         }
         if (Utils.getConfigBoolean("urls_only.save", false)) {
