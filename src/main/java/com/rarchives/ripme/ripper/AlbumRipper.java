@@ -70,6 +70,10 @@ public abstract class AlbumRipper extends AbstractRipper {
             LOGGER.info("[!] Skipping " + url + " -- already attempted: " + Utils.removeCWD(saveAs));
             return false;
         }
+        if (shouldIgnoreURL(url)) {
+            sendUpdate(STATUS.DOWNLOAD_SKIP, "Skipping " + url.toExternalForm() + " - ignored extension");
+            return false;
+        }
         if (Utils.getConfigBoolean("urls_only.save", false)) {
             // Output URL to file
             Path urlFile = Paths.get(this.workingDir + "/urls.txt");
