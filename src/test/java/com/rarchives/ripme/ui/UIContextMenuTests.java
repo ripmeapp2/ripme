@@ -5,12 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -161,10 +159,9 @@ public class UIContextMenuTests {
         contextMenuMouseListener.getCopyAction().actionPerformed(new ActionEvent(contextMenuMouseListener.getTextComponent(), ActionEvent.ACTION_PERFORMED, ""));
 
         // Verify that the copy operation worked
-        String expectedText = initialText; // Assuming the entire text is copied
         String actualText = contextMenuMouseListener.getDebugSavedString();
 
-        if (expectedText.equals(actualText)) {
+        if (initialText.equals(actualText)) {
             System.out.println("Copy operation successful. Text content matches.");
         } else {
             fail("Copy operation failed. Text content does not match.");
@@ -179,19 +176,12 @@ public class UIContextMenuTests {
         contextMenuMouseListener.getCutAction().actionPerformed(new ActionEvent(contextMenuMouseListener.getTextComponent(), ActionEvent.ACTION_PERFORMED, ""));
 
         // Verify that the cut operation worked
-        String expectedText = initialText; // Assuming the entire text is cut
         String actualText = contextMenuMouseListener.getDebugSavedString();
 
-        if (expectedText.equals(actualText)) {
+        if (initialText.equals(actualText)) {
             System.out.println("Cut operation successful. Text content matches.");
         } else {
             fail("Cut operation failed. Text content does not match.");
-        }
-    }
-    // A test implementation of JTextComponent for testing purposes
-    private static class JTextComponentTestImpl extends JTextPane {
-        JTextComponentTestImpl(JTextComponent delegate) {
-            setText(delegate.getText());
         }
     }
 }

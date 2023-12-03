@@ -51,10 +51,6 @@ public final class MainWindow implements Runnable, RipStatusHandler {
 
     private static JFrame mainFrame;
 
-    public static JTextField getRipTextfield() {
-        return ripTextfield;
-    }
-
     private static JTextField ripTextfield;
     private static JButton ripButton, stopButton;
 
