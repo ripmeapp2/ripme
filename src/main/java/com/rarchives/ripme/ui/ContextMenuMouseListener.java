@@ -21,13 +21,49 @@ import javax.swing.text.JTextComponent;
 public class ContextMenuMouseListener extends MouseAdapter {
     private JPopupMenu popup = new JPopupMenu();
 
+    public String getDebugSavedString() {
+        return debugSavedString;
+    }
+
+    private String debugSavedString;
+
+    public Action getCutAction() {
+        return cutAction;
+    }
+
     private Action cutAction;
     private Action copyAction;
     private Action pasteAction;
+
+    public Action getCopyAction() {
+        return copyAction;
+    }
+
+    public Action getPasteAction() {
+        return pasteAction;
+    }
+
+    public Action getUndoAction() {
+        return undoAction;
+    }
+
+    public Action getSelectAllAction() {
+        return selectAllAction;
+    }
+
     private Action undoAction;
     private Action selectAllAction;
 
+    public JTextComponent getTextComponent() {
+        return textComponent;
+    }
+
     private JTextComponent textComponent;
+
+    public String getSavedString() {
+        return savedString;
+    }
+
     private String savedString = "";
     private Actions lastActionSelected;
 
@@ -46,7 +82,7 @@ public class ContextMenuMouseListener extends MouseAdapter {
             public void actionPerformed(ActionEvent ae) {
                 textComponent.setText("");
                 textComponent.replaceSelection(savedString);
-
+                debugSavedString = textComponent.getText();
                 lastActionSelected = Actions.UNDO;
             }
         };
@@ -60,6 +96,7 @@ public class ContextMenuMouseListener extends MouseAdapter {
             public void actionPerformed(ActionEvent ae) {
                 lastActionSelected = Actions.CUT;
                 savedString = textComponent.getText();
+                debugSavedString = savedString;
                 textComponent.cut();
             }
         };
@@ -71,6 +108,7 @@ public class ContextMenuMouseListener extends MouseAdapter {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 lastActionSelected = Actions.COPY;
+                debugSavedString = textComponent.getText();
                 textComponent.copy();
             }
         };
@@ -83,6 +121,7 @@ public class ContextMenuMouseListener extends MouseAdapter {
             public void actionPerformed(ActionEvent ae) {
                 lastActionSelected = Actions.PASTE;
                 savedString = textComponent.getText();
+                debugSavedString = savedString;
                 ContextActionProtections.pasteFromClipboard(textComponent);
             }
         };
@@ -95,6 +134,7 @@ public class ContextMenuMouseListener extends MouseAdapter {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 lastActionSelected = Actions.SELECT_ALL;
+                debugSavedString = textComponent.getText();
                 textComponent.selectAll();
             }
         };
