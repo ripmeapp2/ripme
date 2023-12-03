@@ -50,6 +50,11 @@ public final class MainWindow implements Runnable, RipStatusHandler {
     private boolean isRipping = false; // Flag to indicate if we're ripping something
 
     private static JFrame mainFrame;
+
+    public static JTextField getRipTextfield() {
+        return ripTextfield;
+    }
+
     private static JTextField ripTextfield;
     private static JButton ripButton, stopButton;
 
