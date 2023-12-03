@@ -76,6 +76,10 @@ public class ContextMenuMouseListener extends MouseAdapter {
 
         //Add protection for cntl+v
 
+        generate_popup();
+    }
+
+    private void generate_popup() {
         undoAction = new AbstractAction("Undo") {
 
             @Override
@@ -157,6 +161,7 @@ public class ContextMenuMouseListener extends MouseAdapter {
         if (e.isPopupTrigger()) {
             if(this.popup == null) {
                 popup = new JPopupMenu();
+                generate_popup();
             }
             popup.show(e.getComponent(), e.getX(), e.getY());
         }
