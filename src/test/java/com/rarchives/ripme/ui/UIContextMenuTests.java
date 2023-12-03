@@ -1,26 +1,19 @@
 package com.rarchives.ripme.ui;
 
-import com.rarchives.ripme.App;
-import com.rarchives.ripme.uiUtils.ContextActionProtections;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
-import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class UIContextMenuTests {
@@ -30,7 +23,7 @@ public class UIContextMenuTests {
     private ContextMenuMouseListener contextMenuMouseListener;
 
     @BeforeEach
-    void setUp() throws IOException, InterruptedException, InvocationTargetException {
+    void setUp() throws InterruptedException, InvocationTargetException {
         AtomicBoolean notDone = new AtomicBoolean(true);
 
         SwingUtilities.invokeAndWait(() -> {
