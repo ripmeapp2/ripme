@@ -18,12 +18,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -281,7 +282,9 @@ public final class MainWindow implements Runnable, RipStatusHandler {
         }
 
         ripTextfield = new JTextField("", 20);
-        ripTextfield.addMouseListener(new ContextMenuMouseListener());
+        ripTextfield.addMouseListener(new ContextMenuMouseListener(ripTextfield));
+//        ((AbstractDocument) ripTextfield.getDocument()).setDocumentFilter(new LengthLimitDocumentFilter(256));
+
         ImageIcon ripIcon = new ImageIcon(mainIcon);
         ripButton = new JButton("<html><font size=\"5\"><b>Rip</b></font></html>", ripIcon);
         stopButton = new JButton("<html><font size=\"5\"><b>Stop</b></font></html>");

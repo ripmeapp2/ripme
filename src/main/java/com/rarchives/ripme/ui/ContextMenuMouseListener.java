@@ -1,15 +1,14 @@
 package com.rarchives.ripme.ui;
 
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.*;
+import java.io.IOException;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 /**
@@ -32,8 +31,20 @@ public class ContextMenuMouseListener extends MouseAdapter {
 
     private enum Actions { UNDO, CUT, COPY, PASTE, SELECT_ALL }
 
+
     @SuppressWarnings("serial")
-    public ContextMenuMouseListener() {
+    public ContextMenuMouseListener(JTextField ripTextfield) {
+        this.textComponent = ripTextfield;
+
+        //Add protection for cntl+v
+        ripTextfield.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == 22) { // ASCII code for Ctrl+V
+                    pasteFromClipboard();
+                }
+            }
+        });
         undoAction = new AbstractAction("Undo") {
 
             @Override
@@ -77,7 +88,8 @@ public class ContextMenuMouseListener extends MouseAdapter {
             public void actionPerformed(ActionEvent ae) {
                 lastActionSelected = Actions.PASTE;
                 savedString = textComponent.getText();
-                textComponent.paste();
+//                textComponent.paste();
+                pasteFromClipboard();
             }
         };
 
@@ -94,6 +106,42 @@ public class ContextMenuMouseListener extends MouseAdapter {
         };
 
         popup.add(selectAllAction);
+    }
+
+    private void pasteFromClipboard() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        Transferable transferable = clipboard.getContents(this);
+
+        try {
+            String clipboardContent = (String) transferable.getTransferData(DataFlavor.stringFlavor);
+
+            // Limit the pasted content to 96 characters
+            if (clipboardContent.length() > 96) {
+                clipboardContent = clipboardContent.substring(0, 96);
+            }
+            // Set the text in the JTextField
+            textComponent.setText(clipboardContent);
+        } catch (UnsupportedFlavorException | IOException unable_to_modify_text_on_paste) {
+            unable_to_modify_text_on_paste.printStackTrace();
+        }
+    }
+    @Override
+    public void mousePressed(MouseEvent e) {
+        showPopup(e);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        showPopup(e);
+    }
+
+    private void showPopup(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+            if(this.popup == null) {
+                popup = new JPopupMenu();
+            }
+            popup.show(e.getComponent(), e.getX(), e.getY());
+        }
     }
 
     @Override
