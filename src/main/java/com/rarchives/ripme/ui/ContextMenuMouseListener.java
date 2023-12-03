@@ -1,5 +1,7 @@
 package com.rarchives.ripme.ui;
 
+import com.rarchives.ripme.uiUtils.ContextActionProtections;
+
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -37,14 +39,7 @@ public class ContextMenuMouseListener extends MouseAdapter {
         this.textComponent = ripTextfield;
 
         //Add protection for cntl+v
-        ripTextfield.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() == 22) { // ASCII code for Ctrl+V
-                    pasteFromClipboard();
-                }
-            }
-        });
+
         undoAction = new AbstractAction("Undo") {
 
             @Override
@@ -88,8 +83,7 @@ public class ContextMenuMouseListener extends MouseAdapter {
             public void actionPerformed(ActionEvent ae) {
                 lastActionSelected = Actions.PASTE;
                 savedString = textComponent.getText();
-//                textComponent.paste();
-                pasteFromClipboard();
+                ContextActionProtections.pasteFromClipboard(textComponent);
             }
         };
 
@@ -108,23 +102,7 @@ public class ContextMenuMouseListener extends MouseAdapter {
         popup.add(selectAllAction);
     }
 
-    private void pasteFromClipboard() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        Transferable transferable = clipboard.getContents(this);
 
-        try {
-            String clipboardContent = (String) transferable.getTransferData(DataFlavor.stringFlavor);
-
-            // Limit the pasted content to 96 characters
-            if (clipboardContent.length() > 96) {
-                clipboardContent = clipboardContent.substring(0, 96);
-            }
-            // Set the text in the JTextField
-            textComponent.setText(clipboardContent);
-        } catch (UnsupportedFlavorException | IOException unable_to_modify_text_on_paste) {
-            unable_to_modify_text_on_paste.printStackTrace();
-        }
-    }
     @Override
     public void mousePressed(MouseEvent e) {
         showPopup(e);
