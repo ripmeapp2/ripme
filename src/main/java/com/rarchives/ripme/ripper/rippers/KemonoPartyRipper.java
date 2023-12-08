@@ -99,7 +99,7 @@ public class KemonoPartyRipper extends AbstractJSONRipper {
 
     @Override
     protected JSONObject getNextPage(JSONObject doc) throws IOException, URISyntaxException {
-        String apiUrl = String.format("https://kemono.su/api/v1/%s/user/%s?o=" + internalFileLimit, service, user);
+        String apiUrl = String.format("https://kemono.su/api/v1/%s/user/%s?o=%s", service, user, internalFileLimit);
         String jsonArrayString = Http.url(apiUrl)
                 .ignoreContentType()
                 .response()
