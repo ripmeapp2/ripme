@@ -98,6 +98,19 @@ public class KemonoPartyRipper extends AbstractJSONRipper {
     }
 
     @Override
+    public String getAlbumTitle(URL url) throws MalformedURLException {
+        String title;
+        try {
+            //Gets artist name
+            title = getHost() + "_" + getGID(url) + "_" + Http.url(url).get().select("meta[name=artist_name][content]").get(0).attributes().get("content");
+        }catch (Exception e){
+            LOGGER.info("Failed to get album title, using id.");
+            title = getGID(url);
+        }
+        return title;
+    }
+
+    @Override
     protected JSONObject getNextPage(JSONObject doc) throws IOException, URISyntaxException {
         String apiUrl = String.format("https://kemono.su/api/v1/%s/user/%s?o=%s", service, user, internalFileLimit);
         String jsonArrayString = Http.url(apiUrl)
