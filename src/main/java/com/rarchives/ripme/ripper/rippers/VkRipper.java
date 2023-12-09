@@ -2,6 +2,7 @@ package com.rarchives.ripme.ripper.rippers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -137,7 +138,7 @@ public class VkRipper extends AbstractJSONRipper {
     }
 
     @Override
-    public void rip() throws IOException {
+    public void rip() throws IOException, URISyntaxException {
         if (this.url.toExternalForm().contains("/videos")) {
             RIP_TYPE = RipType.VIDEO;
             JSONObject json = getFirstPage();
