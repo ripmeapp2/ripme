@@ -45,6 +45,12 @@ public class KemonoPartyRipper extends AbstractJSONRipper {
     private JSONObject current_page_data;
     private int internalFileLimit;
 
+    /**
+     * This method is used to initialize a KemonoPartyRipper object with the given URL.
+     *
+     * @param url The URL from which to rip the content.
+     * @throws IOException If an I/O error occurs while initializing the ripper.
+     */
     public KemonoPartyRipper(URL url) throws IOException {
         super(url);
         List<String> pathElements = Arrays.stream(url.getPath().split("/"))
@@ -77,11 +83,23 @@ public class KemonoPartyRipper extends AbstractJSONRipper {
         return host.endsWith("kemono.party") || host.endsWith("kemono.su");
     }
 
+    /**
+     * Retrieves the GID (Group ID) for a given URL.
+     *
+     * @param url The URL for which to retrieve the GID.
+     * @return The GID as a String.
+     */
     @Override
     public String getGID(URL url) {
         return Utils.filesystemSafe(String.format("%s_%s", service, user));
     }
 
+    /**
+     * Retrieves the first page of data from the API.
+     *
+     * @return The first page of data as a JSONObject.
+     * @throws IOException If an I/O error occurs.
+     */
     @Override
     protected JSONObject getFirstPage() throws IOException {
         String apiUrl = String.format("https://kemono.su/api/v1/%s/user/%s", service, user);
@@ -97,6 +115,13 @@ public class KemonoPartyRipper extends AbstractJSONRipper {
         return wrapperObject;
     }
 
+    /**
+     * Retrieves the title of an album from the given URL.
+     *
+     * @param url The URL of the album.
+     * @return The title of the album.
+     * @throws MalformedURLException If the URL is malformed.
+     */
     @Override
     public String getAlbumTitle(URL url) throws MalformedURLException {
         String title;
@@ -110,6 +135,14 @@ public class KemonoPartyRipper extends AbstractJSONRipper {
         return title;
     }
 
+    /**
+     * Retrieves the next page of data from the API. Kemono uses a 50 request limit, so you must offset by 50 each time.
+     *
+     * @param doc The current page data as a JSONObject.
+     * @return The next page data as a JSONObject.
+     * @throws IOException If an I/O error occurs.
+     * @throws URISyntaxException If the URI syntax is invalid.
+     */
     @Override
     protected JSONObject getNextPage(JSONObject doc) throws IOException, URISyntaxException {
         String apiUrl = String.format("https://kemono.su/api/v1/%s/user/%s?o=%s", service, user, internalFileLimit);
@@ -118,8 +151,6 @@ public class KemonoPartyRipper extends AbstractJSONRipper {
                 .response()
                 .body();
         JSONArray jsonArray = new JSONArray(jsonArrayString);
-
-        // Ideally we'd just return the JSONArray from here, but we have to wrap it in a JSONObject
         JSONObject wrapperObject = new JSONObject();
         wrapperObject.put(KEY_WRAPPER_JSON_ARRAY, jsonArray);
         internalFileLimit += 50;
@@ -129,6 +160,12 @@ public class KemonoPartyRipper extends AbstractJSONRipper {
         return wrapperObject;
     }
 
+    /**
+     * Retrieves the URLs of files from a given JSON object and adds them to a list.
+     *
+     * @param json The JSON object containing information about the files.
+     * @return A list of URLs of the files.
+     */
     @Override
     protected List<String> getURLsFromJSON(JSONObject json) {
         // extract the array from our wrapper JSONObject
@@ -201,6 +238,12 @@ public class KemonoPartyRipper extends AbstractJSONRipper {
         return matcher.matches();
     }
 
+    /**
+     * Checks if the given path represents a video file.
+     *
+     * @param path The path of the file to be checked.
+     * @return True if the file is a video, false otherwise.
+     */
     private boolean isVideo(String path) {
         Matcher matcher = VID_PATTERN.matcher(path);
         return matcher.matches();
