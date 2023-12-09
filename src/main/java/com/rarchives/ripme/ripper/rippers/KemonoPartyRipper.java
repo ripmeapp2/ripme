@@ -102,7 +102,7 @@ public class KemonoPartyRipper extends AbstractJSONRipper {
         String title;
         try {
             //Gets artist name
-            title = getHost() + "_" + getGID(url) + "_" + Http.url(url).get().select("meta[name=artist_name][content]").get(0).attributes().get("content");
+            title = getHost() + "_" + getGID(url) + "_" + Http.url(url).get().select("meta[name=artist_name][content]").attr("content");
         }catch (Exception e){
             LOGGER.info("Failed to get album title, using id.");
             title = getGID(url);
