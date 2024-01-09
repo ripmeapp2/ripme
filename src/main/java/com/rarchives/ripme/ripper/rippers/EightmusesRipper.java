@@ -112,7 +112,7 @@ public class EightmusesRipper extends AbstractHTMLRipper {
                         URL imageUrl = new URI(image).toURL();
                         addURLToDownload(imageUrl, getSubdir(page.select("title").text()), this.url.toExternalForm(), cookies, getPrefixShort(i), "", null, true);
                     } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                        LOGGER.error("\"" + image + "\" is malformed");
                     }
                 }
                 if (!image.contains("8muses.com")) {
