@@ -106,8 +106,7 @@ public class EightmusesRipper extends AbstractHTMLRipper {
                     image = thumb.attr("data-cfsrc");
                 } else {
                     try {
-                        Document document = Jsoup.parse(thumb.html());
-                        Element imageElement = document.select("img.lazyload").first();
+                        Element imageElement = thumb.select("img").first();
                         image = "https://comics.8muses.com" + imageElement.attr("data-src").replace("/th/", "/fl/");
                         URL imageUrl = new URI(image).toURL();
                         addURLToDownload(imageUrl, getSubdir(page.select("title").text()), this.url.toExternalForm(), cookies, getPrefixShort(i), "", null, true);
