@@ -104,13 +104,14 @@ public class EightmusesRipper extends AbstractHTMLRipper {
                 if (thumb.hasAttr("data-cfsrc")) {
                     image = thumb.attr("data-cfsrc");
                 } else {
+                    Element imageElement = thumb.select("img").first();
+                    image = "https://comics.8muses.com" + imageElement.attr("data-src").replace("/th/", "/fl/");
                     try {
-                        Element imageElement = thumb.select("img").first();
-                        image = "https://comics.8muses.com" + imageElement.attr("data-src").replace("/th/", "/fl/");
                         URL imageUrl = new URI(image).toURL();
                         addURLToDownload(imageUrl, getSubdir(page.select("title").text()), this.url.toExternalForm(), cookies, getPrefixShort(i), "", null, true);
-                    } catch (Exception e) {
+                    } catch (MalformedURLException | URISyntaxException e) {
                         LOGGER.error("\"" + image + "\" is malformed");
+                        LOGGER.error(e.getMessage());
                     }
                 }
                 if (!image.contains("8muses.com")) {
