@@ -95,6 +95,7 @@ public final class MainWindow implements Runnable, RipStatusHandler {
     private static JCheckBox configAutoupdateCheckbox;
     private static JComboBox<String> configLogLevelCombobox;
     private static JCheckBox configURLHistoryCheckbox;
+    private static JCheckBox configIgnoreSSLCertificate;
     private static JCheckBox configPlaySound;
     private static JCheckBox configSaveOrderCheckbox;
     private static JCheckBox configShowPopup;
@@ -212,6 +213,7 @@ public final class MainWindow implements Runnable, RipStatusHandler {
         Utils.setConfigBoolean("descriptions.save", configSaveDescriptions.isSelected());
         Utils.setConfigBoolean("prefer.mp4", configPreferMp4.isSelected());
         Utils.setConfigBoolean("remember.url_history", configURLHistoryCheckbox.isSelected());
+        Utils.setConfigBoolean("ignore.ssl_verification", configIgnoreSSLCertificate.isSelected());
         Utils.setConfigString("lang", configSelectLangComboBox.getSelectedItem().toString());
         saveWindowPosition(mainFrame);
         saveHistory();
@@ -565,6 +567,8 @@ public final class MainWindow implements Runnable, RipStatusHandler {
                 true);
         configURLHistoryCheckbox = addNewCheckbox(Utils.getLocalizedString("remember.url.history"),
                 "remember.url_history", true);
+        configIgnoreSSLCertificate = addNewCheckbox(Utils.getLocalizedString("ignore.ssl_verification"),
+                "ignore.ssl_verification", true);
         configUrlFileChooserButton = new JButton(Utils.getLocalizedString("download.url.list"));
 
         configLogLevelCombobox = new JComboBox<>(
@@ -599,6 +603,7 @@ public final class MainWindow implements Runnable, RipStatusHandler {
         addItemToConfigGridBagConstraints(gbc, idx++, configClipboardAutorip, configSaveAlbumTitles);
         addItemToConfigGridBagConstraints(gbc, idx++, configSaveDescriptions, configPreferMp4);
         addItemToConfigGridBagConstraints(gbc, idx++, configWindowPosition, configURLHistoryCheckbox);
+        addItemToConfigGridBagConstraints(gbc, idx++, configIgnoreSSLCertificate, configIgnoreSSLCertificate);
         addItemToConfigGridBagConstraints(gbc, idx++, configSelectLangComboBox, configUrlFileChooserButton);
         addItemToConfigGridBagConstraints(gbc, idx++, configSaveDirLabel, configSaveDirButton);
 
@@ -738,6 +743,7 @@ public final class MainWindow implements Runnable, RipStatusHandler {
         configPreferMp4.setText(Utils.getLocalizedString("prefer.mp4.over.gif"));
         configWindowPosition.setText(Utils.getLocalizedString("restore.window.position"));
         configURLHistoryCheckbox.setText(Utils.getLocalizedString("remember.url.history"));
+        configIgnoreSSLCertificate.setText(Utils.getLocalizedString("ignore.ssl_verification"));
         optionLog.setText(Utils.getLocalizedString("Log"));
         optionHistory.setText(Utils.getLocalizedString("History"));
         optionQueue.setText(Utils.getLocalizedString("queue"));
@@ -1012,6 +1018,7 @@ public final class MainWindow implements Runnable, RipStatusHandler {
         addCheckboxListener(configSaveLogs, "log.save");
         addCheckboxListener(configSaveURLsOnly, "urls_only.save");
         addCheckboxListener(configURLHistoryCheckbox, "remember.url_history");
+        addCheckboxListener(configIgnoreSSLCertificate, "ignore.ssl_verification");
         addCheckboxListener(configSaveAlbumTitles, "album_titles.save");
         addCheckboxListener(configSaveDescriptions, "descriptions.save");
         addCheckboxListener(configPreferMp4, "prefer.mp4");
@@ -1528,8 +1535,8 @@ public final class MainWindow implements Runnable, RipStatusHandler {
             }
             /*
              * content key %path% the path to the album folder %url% is the album url
-             * 
-             * 
+             *
+             *
              */
             if (Utils.getConfigBoolean("enable.finish.command", false)) {
                 try {
