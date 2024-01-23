@@ -568,7 +568,7 @@ public final class MainWindow implements Runnable, RipStatusHandler {
         configURLHistoryCheckbox = addNewCheckbox(Utils.getLocalizedString("remember.url.history"),
                 "remember.url_history", true);
         configIgnoreSSLCertificate = addNewCheckbox(Utils.getLocalizedString("ignore.ssl_verification"),
-                "ignore.ssl_verification", true);
+                "ignore.ssl_verification", false);
         configUrlFileChooserButton = new JButton(Utils.getLocalizedString("download.url.list"));
 
         configLogLevelCombobox = new JComboBox<>(
