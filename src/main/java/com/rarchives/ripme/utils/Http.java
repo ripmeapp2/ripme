@@ -254,8 +254,9 @@ public class Http {
             HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
             HostnameVerifier allHostsValid = (hostname, session) -> true;
             HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-            System.out.println("ignoreSSLVerification");
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            logger.error("ignoreSSLVerification() failed.");
+            logger.error(e.getMessage());
         }
     }
 
@@ -266,7 +267,9 @@ public class Http {
             sslContext.init(null, null, new SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier());
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            logger.error("undoSSLVerificationIgnore() failed.");
+            logger.error(e.getMessage());
         }
     }
 }
