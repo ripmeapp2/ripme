@@ -43,9 +43,6 @@ public class Http {
     public Http(String url) {
         this.url = url;
         defaultSettings();
-        if(Utils.getConfigBoolean("ignore.ssl_verification",false)){
-            ignoreSSLVerification();
-        }
     }
 
     private Http(URL url) {
@@ -237,7 +234,7 @@ public class Http {
         throw new IOException("Failed to load " + url + " after " + this.retries + " attempts", lastException);
     }
 
-    private void ignoreSSLVerification() {
+    public static void ignoreSSLVerification() {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
@@ -257,9 +254,19 @@ public class Http {
             HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
             HostnameVerifier allHostsValid = (hostname, session) -> true;
             HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-        } catch (Exception e) {
-            logger.error("ignoreSSLVerification() failed.");
-            logger.error(e.getMessage());
+            System.out.println("ignoreSSLVerification");
+        } catch (Exception ignored) {
+        }
+    }
+
+    public static void undoSSLVerificationIgnore() {
+        try {
+            // Reset to the default SSL socket factory and hostname verifier
+            SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, null, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier());
+        } catch (Exception ignored) {
         }
     }
 }
