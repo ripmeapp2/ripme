@@ -36,7 +36,7 @@ public abstract class AbstractHTMLRipper extends AbstractRipper {
 
     protected AbstractHTMLRipper(URL url) throws IOException {
         super(url);
-        if(Utils.getConfigBoolean("ignore.ssl_verification",false)){
+        if(Utils.getConfigBoolean("ssl.verify.off",false)){
             Http.ignoreSSLVerification();
         }else {
             Http.undoSSLVerificationIgnore();
