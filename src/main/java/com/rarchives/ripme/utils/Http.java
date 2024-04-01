@@ -234,7 +234,7 @@ public class Http {
         throw new IOException("Failed to load " + url + " after " + this.retries + " attempts", lastException);
     }
 
-    public static void ignoreSSLVerification() {
+    public static void SSLVerifyOff() {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
@@ -260,7 +260,7 @@ public class Http {
         }
     }
 
-    public static void undoSSLVerificationIgnore() {
+    public static void undoSSLVerifyOff() {
         try {
             // Reset to the default SSL socket factory and hostname verifier
             SSLContext sslContext = SSLContext.getInstance("SSL");
